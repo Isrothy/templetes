@@ -1,19 +1,16 @@
-<Blossom> <Blossom.cpp>
-<Dinic> <Dinic.cpp>
-<Primal Dual> <Primal_Dual.cpp>
-<DMST> <DMST.cpp>
-<Steiner Minimum Tree> <Steiner_Minimum_Tree.cpp>
-<Stoer Wagner> <Stoer_Wagner.cpp>
+<Blossom> <blossom.cpp>
+<Dinic> <dinic.cpp>
+<Primal Dual> <primal_dual.cpp>
+<MinimumArborescence> <minimum_arborescence.cpp>
+<Steiner Minimum Tree> <steiner_minimum_tree.cpp>
 <Four Membered Rings> <four_membered_rings.cpp>
 <Three Membered Rings> <three_membered_rings.cpp>
-<HK> <HK.cpp>
-<KM> <KM.cpp>
-<Kth Ancestor> <kth_ancestor.cpp>
+<HK> <hk.cpp>
+<KM> <km.cpp>
 <Kth Shortest Path> <kth_shortest_path.cpp>
 <Tarjan's BCC> <tarjan_bcc.cpp>
-<Tarjan's EBC> <tarjan_ebc.cpp>
+<Tarjan's ECC> <tarjan_ecc.cpp>
 <Tarjan's SCC> <tarjan_scc.cpp>
 <Block Cut Tree> <block_cut_tree.cpp>
-<Eulor Path (Directed)> <Eulor_path/directed_path.cpp>
-<Eulor Path (Undirected)> <Eulor_path/undirected_graph.cpp>
-<2-SAT (Tarjan)> <Two_SAT/Tarjan.cpp>
+<Eulerian Circle> <eulerian_circle.cpp>
+<2-SAT> <two_sat.cpp>

@@ -1,11 +1,10 @@
 #include <iostream>
 #include <random>
 struct treap;
-size_t safe_size(treap *p);
+int safe_size(treap *p);
 std::mt19937_64 mt_rand(std::random_device{}());
 struct treap {
-    int val;
-    size_t size;
+    int val, size;
     unsigned long long priority;
     treap *ch[2]{};
     explicit treap(int val) : val(val), size(1), priority(mt_rand()) {}
@@ -24,7 +23,7 @@ struct treap {
     }
 };
 typedef std::pair<treap *, treap *> ptt;
-size_t safe_size(treap *p) { return p == nullptr ? 0 : p->size; }
+int safe_size(treap *p) { return p == nullptr ? 0 : p->size; }
 treap *insert(treap *p, int x) {
     if (p == nullptr) { return new treap(x); }
     bool f = p->val < x;
@@ -44,8 +43,8 @@ treap *erase(treap *p, int x) {
     }
     return p->push_up();
 }
-size_t rank(treap *p, int x) {
-    size_t res = 1;
+int rank(treap *p, int x) {
+    int res = 1;
     while (p != nullptr) {
         if (p->val < x) {
             res += safe_size(p->ch[0]) + 1;
@@ -56,9 +55,9 @@ size_t rank(treap *p, int x) {
     }
     return res;
 }
-int kth(treap *p, size_t k) {
+int kth(treap *p, int k) {
     for (;;) {
-        size_t s = safe_size(p->ch[0]);
+        int s = safe_size(p->ch[0]);
         if (s + 1 == k) { return p->val; }
         if (k <= s) {
             p = p->ch[0];

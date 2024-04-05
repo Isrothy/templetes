@@ -1,5 +1,5 @@
 #include <cstring>
-template<size_t M> struct BipartiteGraph {
+template<size_t M> struct KM {
     static const int INF = 0x3f3f3f3f;
     int d[M][M], Q[M], S[M], T[M], lx[M], ly[M], slack[M], pre[M];
     bool visx[M], visy[M];

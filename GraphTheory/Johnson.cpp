@@ -1,6 +1,5 @@
 #include <queue>
 #include <vector>
-using std::greater;
 bool Johnson(int n, std::vector<std::pair<int, int>> *E, long long dis[M][M]) {
     std::queue<int> Q;
     static int h[M], cnt[M];
@@ -28,7 +27,7 @@ bool Johnson(int n, std::vector<std::pair<int, int>> *E, long long dis[M][M]) {
         }
     }
     for (int i = 1; i <= n; ++i) {
-        std::priority_queue<std::pair<int, int>, std::vector<std::pair<int, int>>, greater<>> heap;
+        std::priority_queue<std::pair<int, int>, std::vector<std::pair<int, int>>, std::greater<>> heap;
         for (int u = 1; u <= n; ++u) { dis[i][u] = INF; }
         dis[i][i] = 0;
         heap.push(std::make_pair(0, i));

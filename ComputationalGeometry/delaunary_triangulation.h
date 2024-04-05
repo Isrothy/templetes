@@ -7,10 +7,10 @@ class DelaunayGraph {
     class QuadEdge {
         Point *orig_;
         EdgeIt rot_{}, onext_{};
-      public:
+    public:
         explicit QuadEdge(Point *origin) : orig_(origin) {}
-#define DEFINE_ACCESSOR(name, expr)                                                                                                                                                                    \
-    auto name() const { return expr; }                                                                                                                                                                 \
+#define DEFINE_ACCESSOR(name, expr)    \
+    auto name() const { return expr; } \
     auto &name() { return expr; }
         DEFINE_ACCESSOR(rot, rot_);
         DEFINE_ACCESSOR(onext, onext_);
@@ -83,16 +83,15 @@ class DelaunayGraph {
             auto b = add_edge(points[1], points[2]);
             splice(a->rev(), b);
             switch (side_of_line(*points[1], {*points[0], *points[2]})) {
-                using enum Side;
-                case left: {
+                case Side::left: {
                     auto c = connect(b, a);
                     return {c->rev(), c};
                 }
-                case right: {
+                case Side::right: {
                     connect(b, a);
                     return {a, b->rev()};
                 }
-                case on: {
+                case Side::on: {
                     return {a, b->rev()};
                 }
             }
@@ -140,7 +139,7 @@ class DelaunayGraph {
         }
         return {ldo, rdo};
     }
-  public:
+public:
     explicit DelaunayGraph(std::span<Point> points) {
         auto n = points.size();
         if (n < 2) { return; }

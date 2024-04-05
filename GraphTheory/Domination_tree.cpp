@@ -1,47 +1,52 @@
-vector<int> E[M], R[M], Q[M];
-int par[M], dfn[M], vertices[M], Fa[M], idom[M], sdom[M], val[M];
-int dfs_clock;
-bool cmp(int u, int v) { return dfn[u] < dfn[v]; }
-int Find(int u) {
-    if (u == Fa[u]) { return u; }
-    int &v = Fa[u], w = Find(Fa[u]);
-    if (v != w) {
-        if (cmp(sdom[val[v]], sdom[val[u]])) { val[u] = val[v]; }
-        v = w;
+#include <span>
+#include <vector>
+struct DominatorTree {
+    std::vector<std::vector<int>> adj, rev, bucket;
+    std::vector<int> parent, dfn, va, dsu, idom, sdom, label;
+    auto find(int u) {
+        if (u == dsu[u]) { return u; }
+        if (auto &v = dsu[u], w = find(v); v != w) {
+            if (dfn[sdom[label[v]]] < dfn[sdom[label[u]]]) { label[u] = label[v]; }
+            v = w;
+        }
+        return dsu[u];
     }
-    return Fa[u];
-}
-void dfs(int u) {
-    dfn[u] = ++dfs_clock;
-    vertices[dfs_clock] = u;
-    for (auto v: E[u]) {
-        if (dfn[v] == 0) {
-            par[v] = u;
-            dfs(v);
+    void dfs(int u) {
+        dfn[u] = (int) va.size();
+        va.push_back(u);
+        for (auto v: adj[u]) {
+            if (dfn[v] == 0) {
+                parent[v] = u;
+                dfs(v);
+            }
         }
     }
-}
-void Lengauer_Tarjan(int root) {
-    dfs(root);
-    for (int u = 1; u <= n; ++u) { Fa[u] = sdom[u] = val[u] = u; }
-    for (int i = dfs_clock; i; --i) {
-        int u = vertices[i];
-        for (auto v: R[u]) {
-            if (dfn[v] == 0) { continue; }
-            Find(v);
-            sdom[u] = min(sdom[u], sdom[val[v]], cmp);
+    DominatorTree(std::span<std::pair<int, int>> edges, int n, int root) : adj(n + 1), rev(n + 1), bucket(n + 1), parent(n + 1), dfn(n + 1), va(1), dsu(n + 1), idom(n + 1), sdom(n + 1), label(n + 1) {
+        for (auto [u, v]: edges) {
+            adj[u].push_back(v);
+            rev[v].push_back(u);
         }
-        for (auto v: Q[u]) {
-            Find(v);
-            idom[v] = sdom[v] == sdom[val[v]] ? sdom[v] : val[v];
+        dfs(root);
+        for (int u = 1; u <= n; ++u) { dsu[u] = sdom[u] = label[u] = u; }
+        for (auto i = (int) va.size() - 1; i; --i) {
+            auto u = va[i];
+            for (auto v: rev[u]) {
+                if (dfn[v]) {
+                    find(v);
+                    sdom[u] = std::min(sdom[u], sdom[label[v]], [&](auto a, auto b) { return dfn[a] < dfn[b]; });
+                }
+            }
+            for (auto v: bucket[u]) {
+                find(v);
+                idom[v] = sdom[v] == sdom[label[v]] ? sdom[v] : label[v];
+            }
+            if (i != 1) {
+                dsu[u] = parent[u];
+                bucket[sdom[u]].push_back(u);
+            }
         }
-        if (i != 1) {
-            Fa[u] = par[u];
-            Q[sdom[u]].push_back(u);
+        for (int i = 2; i < va.size(); ++i) {
+            if (auto u = va[i]; idom[u] != sdom[u]) { idom[u] = idom[idom[u]]; }
         }
     }
-    for (int i = 2; i <= dfs_clock; ++i) {
-        int u = vertices[i];
-        if (idom[u] != sdom[u]) { idom[u] = idom[idom[u]]; }
-    }
-}
+};

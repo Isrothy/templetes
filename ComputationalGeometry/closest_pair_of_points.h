@@ -6,31 +6,29 @@ namespace {
     auto clostest_pair_of_points_helper(std::span<Point> a) -> Segment {
         auto n = a.size();
         if (n <= 3) {
-            auto res = std::make_pair(a[0], a[1]);
-            for (size_t i = 0; i < n; ++i) {
-                for (size_t j = i + 1; j < n; ++j) { res = std::min(res, std::make_pair(a[i], a[j]), closer); }
-            }
             std::sort(a.begin(), a.end(), cmp_y);
-            return res;
+            if (n == 2) { return std::make_pair(a[0], a[1]); }
+            return std::min({std::make_pair(a[0], a[1]), std::make_pair(a[0], a[2]), std::make_pair(a[1], a[2])}, closer);
         }
-        auto mid = n >> 1;
+        auto mid = n / 2;
         auto xmid = a[mid].x;
         auto ls = clostest_pair_of_points_helper(a.subspan(0, mid));
         auto rs = clostest_pair_of_points_helper(a.subspan(mid, n - mid));
         auto res = std::min(ls, rs, closer);
+        auto d = len(res);
         std::inplace_merge(a.begin(), a.begin() + static_cast<ptrdiff_t>(mid), a.end(), cmp_y);
         std::deque<Point> b;
         for (const auto &P: a) {
-            if (xmid - P.x >= len(res)) { continue; }
+            if (std::fabs(xmid - P.x) >= d) { continue; }
             for (const auto &Q: b) { res = std::min(res, std::make_pair(P, Q), closer); }
-            while (!b.empty() && P.y - b.front().y >= len(res)) { b.pop_front(); }
+            while (!b.empty() && P.y - b.front().y >= d) { b.pop_front(); }
             b.push_back(P);
         }
         return res;
     }
 }// namespace
 auto closest_pair_of_points(std::vector<Point> a) {
-    assert(a.size() >= 2);
+    if (a.size() < 2) { throw std::runtime_error("closest_pair_of_points: a must have at least 2 points"); }
     std::sort(a.begin(), a.end(), [](const auto &P, const auto &Q) { return P.x != Q.x ? P.x < Q.x : P.y < Q.y; });
     return clostest_pair_of_points_helper(a);
 }

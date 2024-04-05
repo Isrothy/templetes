@@ -5,7 +5,7 @@
 template<typename T> struct FibNode {
     T key;
     int degree;
-    size_t size;
+    int size;
     bool mark;
     FibNode *parent, *child, *left, *right;
     explicit FibNode(T key) : key(std::move(key)), degree(0), size(1), mark(false), parent(nullptr), child(nullptr), left(this), right(this) {}
@@ -28,7 +28,7 @@ template<typename T> void FibLink(FibNode<T> *x, FibNode<T> *y) {
     y->degree++;
     x->mark = false;
 }
-template<typename T> FibNode<T> *consolidate(FibNode<T> *min, size_t size) {
+template<typename T> FibNode<T> *consolidate(FibNode<T> *min, int size) {
     std::vector<FibNode<T> *> a(log(size) / log(std::numbers::phi) + 1, nullptr);
     auto w = min;
     do {
@@ -72,7 +72,7 @@ template<typename T> FibNode<T> *insert(FibNode<T> *min, T key) {
 }
 template<typename T> std::pair<T, FibNode<T> *> extract_min(FibNode<T> *min) {
     T result = min->key;
-    size_t size = min->size;
+    int size = min->size;
     auto child = min->child;
     if (child) {
         child->parent = nullptr;
@@ -106,7 +106,7 @@ template<typename T> FibNode<T> *cut(FibNode<T> *min, FibNode<T> *x) {
 }
 template<typename T> FibNode<T> *decrease_key(FibNode<T> *min, FibNode<T> *x, T key) {
     x->key = std::move(key);
-    size_t size = min->size;
+    int size = min->size;
     auto y = x->parent;
     if (y && x->key < y->key) {
         min = cut(min, x);

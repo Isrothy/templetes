@@ -1,9 +1,9 @@
 #include <string_view>
-template<size_t M, size_t Sigma> struct SuffixAutomaton {
-    size_t trans[2 * M][Sigma]{}, mxlen[2 * M]{}, slink[2 * M]{};
-    size_t n{};
+template<int M, int Sigma> struct SuffixAutomaton {
+    int trans[2 * M][Sigma]{}, mxlen[2 * M]{}, slink[2 * M]{};
+    int n{};
     SuffixAutomaton() : n(1) {}
-    auto extend(size_t p, int c) {
+    auto extend(int p, int c) {
         auto q = ++n;
         mxlen[q] = mxlen[p] + 1;
         memset(trans[q], 0, sizeof trans[q]);
@@ -29,9 +29,5 @@ template<size_t M, size_t Sigma> struct SuffixAutomaton {
             }
         }
         return q;
-    }
-    void insert(std::string_view s) {
-        size_t p = 1;
-        for (auto c: s) { p = extend(p, c - 'a'); }
     }
 };

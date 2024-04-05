@@ -6,29 +6,29 @@ template<typename T> struct KthSsp {
     template<typename C> using MinHeap = std::priority_queue<C, std::vector<C>, std::greater<>>;
     struct Heap {
         T value;
-        size_t to, height, ch[2]{};
-        Heap(T val, size_t to, size_t heigtht) : value(val), to(to), height(heigtht) {}
+        int to, height, ch[2]{};
+        Heap(T val, int to, int heigtht) : value(val), to(to), height(heigtht) {}
     };
     struct Edge {
         T cost;
-        size_t to;
-        Edge(size_t to, T cost) : cost(cost), to(to) {}
+        int to;
+        Edge(int to, T cost) : cost(cost), to(to) {}
     };
     std::vector<Heap> heaps;
     std::vector<std::vector<Edge>> edges, reverseEdges;
     std::vector<T> dis;
-    std::vector<size_t> a, options;
-    MinHeap<std::pair<T, size_t>> q;
-    size_t n;
+    std::vector<int> a, options;
+    MinHeap<std::pair<T, int>> q;
+    int n;
     bool first{};
     std::optional<T> ssp;
-    explicit KthSsp(size_t n) : edges(n + 1), reverseEdges(n + 1), dis(n + 1), options(n + 1), n(n) {}
-    size_t new_heap(T val, size_t to) {
+    explicit KthSsp(int n) : edges(n + 1), reverseEdges(n + 1), dis(n + 1), options(n + 1), n(n) {}
+    int new_heap(T val, int to) {
         heaps.emplace_back(val, to, 1);
         return heaps.size() - 1;
     }
-    auto &child(size_t p, size_t i) { return heaps[p].ch[i]; }
-    size_t merge(size_t p, size_t q) {
+    auto &child(int p, int i) { return heaps[p].ch[i]; }
+    int merge(int p, int q) {
         if (!p || !q) { return p | q; }
         if (heaps[p].value > heaps[q].value) { std::swap(p, q); }
         auto r = new_heap(heaps[p].value, heaps[p].to);
@@ -38,13 +38,13 @@ template<typename T> struct KthSsp {
         heaps[r].height = heaps[child(r, 0)].height + 1;
         return r;
     }
-    void add_edge(size_t u, size_t v, double cost) {
+    void add_edge(int u, int v, double cost) {
         edges[u].emplace_back(v, cost);
         reverseEdges[v].emplace_back(u, cost);
     }
     void dijkstra(int s, std::span<std::vector<Edge>> edges) {
         std::fill(dis.begin(), dis.end(), INF);
-        MinHeap<std::pair<T, size_t>> q;
+        MinHeap<std::pair<T, int>> q;
         dis[s] = 0;
         q.emplace(0, s);
         while (!q.empty()) {
@@ -59,10 +59,10 @@ template<typename T> struct KthSsp {
             }
         }
     }
-    void build(size_t s, size_t t) {
+    void build(int s, int t) {
         dijkstra(t, reverseEdges);
         heaps = std::vector<Heap>({{0, 0, 0}});
-        q = MinHeap<std::pair<T, size_t>>();
+        q = MinHeap<std::pair<T, int>>();
         std::fill(options.begin(), options.end(), 0);
         first = true;
         ssp = dis[s] == INF ? std::nullopt : std::optional<T>(dis[s]);
@@ -71,13 +71,13 @@ template<typename T> struct KthSsp {
             for (auto &e: edges[u]) {
                 if (dis[u] == dis[e.to] + e.cost) { tree_edge = &e; }
             }
-            std::vector<size_t> tmp;
+            std::vector<int> tmp;
             tmp.reserve(edges[u].size());
             for (auto &e: edges[u]) {
                 if (&e != tree_edge && dis[e.to] != INF) { tmp.push_back(new_heap(dis[e.to] - dis[u] + e.cost, e.to)); }
             }
-            std::make_heap(tmp.begin(), tmp.end(), [this](size_t p, size_t q) { return heaps[p].value > heaps[q].value; });
-            for (size_t i = tmp.size(); i-- > 0;) {
+            std::make_heap(tmp.begin(), tmp.end(), [this](int p, int q) { return heaps[p].value > heaps[q].value; });
+            for (int i = (int) tmp.size() - 1; i; --i) {
                 if (auto j = i * 2 + 1; j < tmp.size()) { child(tmp[i], 0) = tmp[j]; }
                 if (auto j = i * 2 + 2; j < tmp.size()) { child(tmp[i], 1) = tmp[j]; }
                 heaps[tmp[i]].height = heaps[child(tmp[i], 0)].height + 1;

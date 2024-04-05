@@ -43,8 +43,4 @@ template<size_t M, size_t Sigma> struct GeneralSuffixAutomaton {
         }
         return q;
     }
-    void insert(std::string_view s) {
-        size_t p = 1;
-        for (auto c: s) { p = extend(p, c - 'a'); }
-    }
 };

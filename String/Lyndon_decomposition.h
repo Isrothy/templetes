@@ -1,9 +1,9 @@
 #include <string_view>
 #include <vector>
 auto lyndon_decomposition(std::string_view s) {
-    auto n = s.size();
-    size_t l = 0, r = 1, d = 1;
-    std::vector<size_t> res;
+    auto n = (int) s.size();
+    int l = 0, r = 1, d = 1;
+    std::vector<int> res;
     while (r <= n) {
         if (s[r] < s[r - d]) {
             while (l + d <= r) {

@@ -2,10 +2,10 @@
 #include <iostream>
 struct avl;
 int safe_height(avl *p);
-size_t safe_size(avl *p);
+int safe_size(avl *p);
 struct avl {
     int val, height;
-    size_t size;
+    int size;
     avl *ch[2]{};
     explicit avl(int val) : val(val), height(1), size(1) {}
     avl *push_up() {
@@ -29,7 +29,7 @@ struct avl {
         return this;
     }
 };
-size_t safe_size(avl *p) { return p == nullptr ? 0 : p->size; }
+int safe_size(avl *p) { return p == nullptr ? 0 : p->size; }
 int safe_height(avl *p) { return p == nullptr ? 0 : p->height; }
 avl *insert(avl *p, int x) {
     if (p == nullptr) { return new avl(x); }

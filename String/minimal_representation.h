@@ -1,7 +1,7 @@
 #include <string_view>
-size_t minimal_representation(std::string_view s) {
+int minimal_representation(std::string_view s) {
     auto n = s.size();
-    size_t i = 0, j = 1, k = 0;
+    int i = 0, j = 1, k = 0;
     while (i < n && j < n && k < n) {
         if (s[(i + k) % n] == s[(j + k) % n]) {
             ++k;

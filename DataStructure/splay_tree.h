@@ -1,10 +1,9 @@
 #include <algorithm>
 #include <stack>
 struct splay_node;
-size_t safe_size(splay_node *p);
+int safe_size(splay_node *p);
 struct splay_node {
-    int val;
-    size_t size;
+    int val, size;
     bool rev;
     splay_node *ch[2], *fa;
     explicit splay_node(int val) : val(val), size(1), rev(false), ch{nullptr, nullptr}, fa(nullptr) {}
@@ -53,4 +52,4 @@ struct splay_node {
         return push_up();
     }
 };
-size_t safe_size(splay_node *p) { return p == nullptr ? 0 : p->size; }
+int safe_size(splay_node *p) { return p == nullptr ? 0 : p->size; }

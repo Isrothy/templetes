@@ -1,16 +1,16 @@
 #include <optional>
 #include <vector>
 template<int64_t mod> struct Matrix : private std::vector<std::vector<int64_t>> {
-    size_t n{}, m{};
+    int n{}, m{};
     Matrix() = default;
     using std::vector<std::vector<int64_t>>::vector;
-    int64_t operator()(size_t i, size_t j) const { return (*this)[i][j]; }
-    int64_t &operator()(size_t i, size_t j) { return (*this)[i][j]; }
+    int64_t operator()(int i, int j) const { return (*this)[i][j]; }
+    int64_t &operator()(int i, int j) { return (*this)[i][j]; }
     explicit Matrix(std::vector<std::vector<int64_t>> v) : std::vector<std::vector<int64_t>>(v) {
         n = v.size();
         m = v[0].size();
     }
-    Matrix(size_t n, size_t m) : n(n), m(m) {
+    Matrix(int n, int m) : n(n), m(m) {
         resize(n);
         for (int i = 0; i < n; ++i) { (*this)[i].resize(m); }
     }
@@ -23,7 +23,7 @@ template<int64_t mod> struct Matrix : private std::vector<std::vector<int64_t>> 
         }
         return res;
     }
-    std::vector<std::vector<int64_t>> Gaussian_elimination(const std::vector<int64_t> &v) const {
+    std::vector<std::vector<int64_t>> gaussian_elimination(const std::vector<int64_t> &v) const {
         assert(n == v.size());
         std::vector<int64_t> v0(m);
         std::vector<int> p(n, -1), f;
@@ -99,10 +99,10 @@ template<int64_t mod> struct Matrix : private std::vector<std::vector<int64_t>> 
         }
         return res;
     }
-    static Matrix identity(size_t n) {
+    static Matrix identity(int n) {
         Matrix res(n, n);
         for (int i = 0; i < n; ++i) { res[i][i] = 1; }
         return res;
     }
-    static Matrix zero(size_t n) { return {n, n}; }
+    static Matrix zero(int n) { return {n, n}; }
 };

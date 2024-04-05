@@ -1,5 +1,5 @@
 #include <cctype>
-template<size_t M> struct LiChaoSegmentTree {
+template<int M> struct LiChaoSegmentTree {
     struct Segment {
         long long x1, y1, x2, y2;
         int id;
