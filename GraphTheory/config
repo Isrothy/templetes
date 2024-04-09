@@ -8,11 +8,9 @@
 <Hungarian> <hungarian.cpp>
 <Blossom> <blossom.cpp>
 <Kth Shortest Path> <kth_shortest_path.cpp>
-<Kth ancestor> <kth_ancestor.cpp>
 <Tarjan's BCC> <tarjan_bcc.cpp>
 <Tarjan's ECC> <tarjan_ecc.cpp>
 <Tarjan's SCC> <tarjan_scc.cpp>
-<Store Wagon> <stoer_wagner.cpp>
 <Block Cut Tree> <block_cut_tree.cpp>
 <Eulerian Circle> <eulerian_circle.cpp>
 <2-SAT> <two_sat.cpp>
