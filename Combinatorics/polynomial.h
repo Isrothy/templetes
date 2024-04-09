@@ -1,4 +1,3 @@
-#include <vector>
 struct polynomial : private std::vector<int> {
     static constexpr int Mod = 998244353, G = 3;
     using std::vector<int>::vector;

@@ -2,7 +2,7 @@
 \ProvidesClass{hxie_template}[2022/10/30 ICPC WF Template By hxie@connect.hku.hk]
 \LoadClass[a4paper]{article}
 
-\RequirePackage[margin=5mm, includehead, headsep=0mm, hoffset=0mm]{geometry}
+\RequirePackage[margin=1mm, includehead, headsep=0mm, hoffset=0mm]{geometry}
 
 \RequirePackage{fancyhdr}
 \pagestyle{fancy}
@@ -10,33 +10,43 @@
 
 \RequirePackage{color}
 \definecolor{dkgreen}{rgb}{0,0.6,0}
-\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{gray}{rgb}{0.8,0.8,0.8}
 \definecolor{mauve}{rgb}{0.58,0,0.82}
 
+
 \RequirePackage{titlesec}
+\titleformat{\section}{\bfseries\large\scshape}{\space\color{red}\thesection}{5pt}{\color{red}}
+\titleformat{\subsection}{\bfseries\large}{\space\color{red} $\bullet$\space\thesubsection}{5pt}{\color{red}}
 \titlespacing{\section}{0pt}{0pt}{0pt}
 \titlespacing{\subsection}{0pt}{0pt}{0pt}
 
+
 \RequirePackage{listings}
 \lstset{frame=tb,
-  language=c++,
+  literate={\ \ \ \ }{\space\space}{2},
+  numbersep=0pt,
   aboveskip=0mm,
   belowskip=0mm,
   showstringspaces=false,
   columns=flexible,
   basicstyle={\linespread{0.5}\small\ttfamily},
-  numbers=none,
   numberstyle=\tiny\color{gray},
   keywordstyle=\color{blue},
   commentstyle=\color{dkgreen},
   stringstyle=\color{mauve},
   breaklines=true,
-  breakatwhitespace=true
-  tabsize=3
+  breakatwhitespace=true,
+  numbers=left,
+  xleftmargin=10pt,
+  xrightmargin=0pt,
+  framexleftmargin=10pt,
+  framexrightmargin=0pt,
+  tabsize=2
 }
 
 \RequirePackage{multicol}
 \setlength{\columnseprule}{1pt}
+\setlength{\columnsep}{0pt}
 
 \RequirePackage{graphicx}
 
