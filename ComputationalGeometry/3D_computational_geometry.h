@@ -1,8 +1,3 @@
-#include <iostream>
-#include <optional>
-#include <random>
-#include <span>
-#include <vector>
 const double EPS = 1e-10;
 int sign(double x) { return (x > 0) - (x < 0); }
 struct Point {

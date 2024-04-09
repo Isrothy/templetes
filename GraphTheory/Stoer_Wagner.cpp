@@ -1,4 +1,4 @@
-int Stoer_Wagner(int d[M][M], int n) {
+int stoer_wagner(int d[M][M], int n) {
     static int w[M];
     static bool vis[M], del[M];
     int res = INF;

@@ -1,23 +1,23 @@
-auto eulerian_circle(std::span<std::pair<size_t, size_t>> edges, size_t n, bool directed) -> std::optional<std::vector<std::pair<size_t, bool>>> {
-    if (edges.empty()) { return std::vector<std::pair<size_t, bool>>(); }
-    std::vector<size_t> degree(n + 1);
-    std::vector<std::vector<std::tuple<size_t, size_t, bool>>> adj(n + 1);
-    for (size_t i = 0; i < edges.size(); ++i) {
+auto eulerian_circle(std::span<std::pair<int, int>> edges, int n, bool directed) -> std::optional<std::vector<std::pair<int, bool>>> {
+    if (edges.empty()) { return std::vector<std::pair<int, bool>>(); }
+    std::vector<int> degree(n + 1);
+    std::vector<std::vector<std::tuple<int, int, bool>>> adj(n + 1);
+    for (int i = 0; i < edges.size(); ++i) {
         auto [u, v] = edges[i];
         --degree[u];
         ++degree[v];
         adj[u].emplace_back(v, i, 0);
         if (!directed) { adj[v].emplace_back(u, i, 1); }
     }
-    size_t u = 0;
+    int u = 0;
     for (int i = 1; i <= n; ++i) {
         if (directed ? degree[i] : degree[i] & 1) { return std::nullopt; }
         if (!u && !adj[i].empty()) { u = i; }
     }
-    std::stack<std::tuple<size_t, size_t, bool>> stk;
-    std::vector<size_t> cur(n + 1);
+    std::stack<std::tuple<int, int, bool>> stk;
+    std::vector<int> cur(n + 1);
     std::vector<bool> vis(edges.size());
-    std::vector<std::pair<size_t, bool>> path;
+    std::vector<std::pair<int, bool>> path;
     stk.emplace(u, 0, false);
     while (!stk.empty()) {
         auto [u, e, dir] = stk.top();

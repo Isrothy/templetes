@@ -76,12 +76,6 @@ struct BigUnsigned : private std::vector<int> {
         }
         return std::strong_ordering::equal;
     }
-    bool operator<(const BigUnsigned &that) const { return (*this <=> that) == std::strong_ordering::less; }
-    bool operator>(const BigUnsigned &that) const { return (*this <=> that) == std::strong_ordering::greater; }
-    bool operator<=(const BigUnsigned &that) const { return (*this <=> that) != std::strong_ordering::greater; }
-    bool operator>=(const BigUnsigned &that) const { return (*this <=> that) != std::strong_ordering::less; }
-    bool operator==(const BigUnsigned &that) const { return (*this <=> that) == std::strong_ordering::equal; }
-    bool operator!=(const BigUnsigned &that) const { return (*this <=> that) != std::strong_ordering::equal; }
     BigUnsigned operator*(const BigUnsigned &that) const {
         std::vector<int64_t> res;
         res.resize((size()) + that.size());
@@ -166,7 +160,7 @@ struct BigInt {
     BigUnsigned _digits;
     bool is_negative() const { return _is_negative; }
     BigUnsigned digits() const { return _digits; }
-    [[nodiscard]] bool is_zero() const { return _digits.is_zero(); }
+    bool is_zero() const { return _digits.is_zero(); }
     int sign() const {
         if (is_zero()) {
             return 0;
@@ -243,10 +237,4 @@ struct BigInt {
             return that.digits() <=> digits();
         }
     }
-    bool operator<(const BigInt &that) const { return (*this <=> that) == std::strong_ordering::less; }
-    bool operator>(const BigInt &that) const { return (*this <=> that) == std::strong_ordering::greater; }
-    bool operator<=(const BigInt &that) const { return (*this <=> that) != std::strong_ordering::greater; }
-    bool operator>=(const BigInt &that) const { return (*this <=> that) != std::strong_ordering::less; }
-    bool operator==(const BigInt &that) const { return (*this <=> that) == std::strong_ordering::equal; }
-    bool operator!=(const BigInt &that) const { return (*this <=> that) != std::strong_ordering::equal; }
 };

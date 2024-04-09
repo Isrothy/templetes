@@ -1,8 +1,4 @@
 \end{multicols}
 \input{integral-table.tex}
 
-\includegraphics[width=\textwidth]{i1.png}
-\includegraphics[width=\textwidth]{i2.png}
-\includegraphics[width=\textwidth]{i3.png}
-\includegraphics[width=\textwidth]{i4.png}
 \end{document}

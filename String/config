@@ -5,6 +5,6 @@
 <Palindromic Automation> <palindromic_automation.h>
 <Suffix Sort> <suffix_sort.h>
 <SA-IS> <SA_IS.h>
-<Suffix balanced tree> <suffix_balanced_tree.h>
 <General Suffix Automaton> <general_suffix_automaton.h>
+<Suffix balanced tree> <suffix_balanced_tree.h>
 

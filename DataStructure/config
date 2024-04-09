@@ -1,6 +1,6 @@
+<AVL> <avl.h>
+<Splay> <splay_tree.h>
 <Link-Cut Tree> <link_cut_tree.h>
 <KD-Tree> <kd_tree.h>
 <Li Chao Tree> <Li_Chao_segment_tree.h>
-<AVL> <avl.h>
-<Splay> <splay_tree.h>
 <Fibnacci Heap> <FibHeap.h>

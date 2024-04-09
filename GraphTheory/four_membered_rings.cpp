@@ -9,7 +9,7 @@ auto four_membered_rings(std::span<std::vector<size_t>> adj) {
         }
     }
     size_t res = 0;
-    for (size_t u = 0; u < n; ++u) {
+    for (int u = 0; u < n; ++u) {
         for (auto v: adj[u]) {
             for (auto w: f[v]) {
                 if (rank[u] < rank[w]) {
