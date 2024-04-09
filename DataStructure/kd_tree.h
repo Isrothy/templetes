@@ -1,6 +1,5 @@
-#include <algorithm>
-const double alpha = 0.7;
 struct KdTree {
+    static constexpr double alpha = 0.7;
     int x, y, val, sum, sz;
     int x_max, x_min, y_max, y_min;
     KdTree *ch[2];

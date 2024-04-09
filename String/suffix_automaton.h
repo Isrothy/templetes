@@ -1,4 +1,3 @@
-#include <string_view>
 template<int M, int Sigma> struct SuffixAutomaton {
     int trans[2 * M][Sigma]{}, mxlen[2 * M]{}, slink[2 * M]{};
     int n{};

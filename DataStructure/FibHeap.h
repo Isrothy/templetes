@@ -1,7 +1,3 @@
-#include <cmath>
-#include <cstdlib>
-#include <iostream>
-#include <numbers>
 template<typename T> struct FibNode {
     T key;
     int degree;

@@ -1,6 +1,3 @@
-#include <numeric>
-#include <string_view>
-#include <vector>
 auto suffix_sort(std::string_view s) {
     int n = (int) s.size() + 1, m = 128;
     std::vector<int> tmp(n + 5), cnt(std::max(n, m) + 5), rank(n), sa(n), height(n);

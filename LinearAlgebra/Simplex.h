@@ -1,23 +1,19 @@
-#include <optional>
-#include <vector>
-namespace {
-    constexpr double Eps = 1e-10;
-    constexpr int sign(double x) { return (x > Eps) - (x < -Eps); }
-    void pivot(std::vector<std::vector<double>> &A, int l, int e, std::vector<int> &id) {
-        auto m = static_cast<int>(A.size());
-        auto n = static_cast<int>(A[0].size());
-        double tmp = -1 / A[l][e];
-        A[l][e] = -1;
-        for (auto &x: A[l]) { x *= tmp; }
-        for (int i = 0; i < m; ++i) {
-            if (i == l) { continue; }
-            tmp = A[i][e];
-            A[i][e] = 0;
-            for (int j = 0; j < n; ++j) { A[i][j] += tmp * A[l][j]; }
-        }
-        std::swap(id[e], id[l + n - 1]);
+constexpr double Eps = 1e-10;
+constexpr int sign(double x) { return (x > Eps) - (x < -Eps); }
+void pivot(std::vector<std::vector<double>> &A, int l, int e, std::vector<int> &id) {
+    auto m = (int) A.size();
+    auto n = (int) A[0].size();
+    double tmp = -1 / A[l][e];
+    A[l][e] = -1;
+    for (auto &x: A[l]) { x *= tmp; }
+    for (int i = 0; i < m; ++i) {
+        if (i == l) { continue; }
+        tmp = A[i][e];
+        A[i][e] = 0;
+        for (int j = 0; j < n; ++j) { A[i][j] += tmp * A[l][j]; }
     }
-}// namespace
+    std::swap(id[e], id[l + n - 1]);
+}
 enum class SimplexResult {
     unbounded,
     infeasible,

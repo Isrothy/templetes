@@ -1,4 +1,3 @@
-#include <string_view>
 int minimal_representation(std::string_view s) {
     auto n = s.size();
     int i = 0, j = 1, k = 0;

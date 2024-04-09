@@ -1,5 +1,3 @@
-#include <queue>
-#include <vector>
 struct PrimalDual {
     static constexpr int64_t INF = 0x3f3f3f3f3f3f3f3f;
     struct Edge {
@@ -10,9 +8,9 @@ struct PrimalDual {
     std::vector<Edge> edges;
     std::vector<std::vector<int>> adj;
     std::vector<int64_t> dis, h;
-    std::vector<bool> vis;
+    std::vector<bool> vis, in_queue;
     int n;
-    explicit PrimalDual(int n) : adj(n + 1), dis(n + 1), h(n + 1), vis(n + 1), n(n) {}
+    explicit PrimalDual(int n) : adj(n), dis(n), h(n), vis(n), in_queue(n), n(n) {}
     void add_edge(int u, int v, int64_t cap, int64_t cost) {
         adj[u].push_back((int) edges.size());
         edges.emplace_back(u, v, cap, cost);
@@ -21,7 +19,7 @@ struct PrimalDual {
     }
     void spfa(int t) {
         std::queue<int> q;
-        std::vector<bool> in_queue(n + 1, false);
+        std::vector<bool> in_queue(n, false);
         std::fill(dis.begin(), dis.end(), INF);
         dis[t] = 0;
         in_queue[t] = true;

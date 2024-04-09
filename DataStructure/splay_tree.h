@@ -1,5 +1,3 @@
-#include <algorithm>
-#include <stack>
 struct splay_node;
 int safe_size(splay_node *p);
 struct splay_node {

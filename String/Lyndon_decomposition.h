@@ -1,5 +1,3 @@
-#include <string_view>
-#include <vector>
 auto lyndon_decomposition(std::string_view s) {
     auto n = (int) s.size();
     int l = 0, r = 1, d = 1;

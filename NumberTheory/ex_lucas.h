@@ -1,4 +1,3 @@
-#include "common.h"
 template<typename T> class ExLucas {
     std::vector<T> p, pk, mt;
     std::vector<std::vector<T>> s;

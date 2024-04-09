@@ -1,5 +1,3 @@
-#include <functional>
-#include <span>
 template<typename Fun> void fwt_base(std::span<int> a, const Fun &f) {
     auto n = a.size();
     for (size_t i = 1; i < n; i <<= 1)

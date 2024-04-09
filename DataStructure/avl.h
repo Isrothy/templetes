@@ -1,5 +1,3 @@
-#include <cassert>
-#include <iostream>
 struct avl;
 int safe_height(avl *p);
 int safe_size(avl *p);

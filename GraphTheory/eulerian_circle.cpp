@@ -1,5 +1,3 @@
-#include <span>
-#include <stack>
 auto eulerian_circle(std::span<std::pair<size_t, size_t>> edges, size_t n, bool directed) -> std::optional<std::vector<std::pair<size_t, bool>>> {
     if (edges.empty()) { return std::vector<std::pair<size_t, bool>>(); }
     std::vector<size_t> degree(n + 1);

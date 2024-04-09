@@ -1,5 +1,3 @@
-#include "../NumberTheory/common.h"
-#include <tuple>
 template<int64_t mod> constexpr auto Euclidean_like(int64_t n, int64_t a, int64_t b, int64_t c) -> std::tuple<int64_t, int64_t, int64_t> {
     // tuple(sum_{x=0}^n (ax+b)/c,sum_{x=0}^n ((ax+b)/c)^2,sum_{x=0}^n x*((ax+b)/c))
     constexpr auto inv2 = inverse<int64_t>(2, mod);

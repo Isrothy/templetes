@@ -1,6 +1,3 @@
-#include "2D_computational_geometry.h"
-#include <array>
-#include <list>
 class DelaunayGraph {
     class QuadEdge;
     using EdgeIt = std::list<QuadEdge>::iterator;

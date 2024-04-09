@@ -1,59 +1,57 @@
-#include <algorithm>
-#include <bit>
-#include <cmath>
-struct Cp {
-    double re, im;
-    Cp operator+(Cp const &_) const { return {re + _.re, im + _.im}; }
-    Cp operator-(Cp const &_) const { return {re - _.re, im - _.im}; }
-    Cp operator*(Cp const &_) const { return {re * _.re - im * _.im, re * _.im + im * _.re}; }
-    Cp operator*(double _) const { return {re * _, im * _}; }
+struct Couple {
+    double Re, Im;
+    Couple(double Re_ = 0, double Im_ = 0) : Re(Re_), Im(Im_) {}
+    Couple operator+(Couple const &_) const { return (Couple){Re + _.Re, Im + _.Im}; }
+    Couple operator-(Couple const &_) const { return (Couple){Re - _.Re, Im - _.Im}; }
+    Couple operator*(Couple const &_) const { return (Couple){Re * _.Re - Im * _.Im, Re * _.Im + Im * _.Re}; }
 };
-void DFT(Cp *a, int n, int p) {
-    static Cp w[M];
+auto dft(std::vector<Couple> a) {
+    constexpr auto pi = std::numbers::pi;
+    auto n = (int) a.size();
     for (int i = 0, j = 0; i < n; ++i) {
         if (i < j) { std::swap(a[i], a[j]); }
         for (int k = n >> 1; (j ^= k) < k; k >>= 1)
             ;
     }
-    w[0] = {1, 0};
+    std::vector<Couple> w(n);
+    w[0] = 1;
     for (int i = 1; i < n; i <<= 1) {
-        Cp wn = (Cp){cos(M_PI / i), sin(M_PI / i)};
+        Couple wn{cos(pi / i), sin(pi / i)};
         for (int j = i - 2; j >= 0; j -= 2) {
             w[j] = w[j >> 1];
             w[j + 1] = wn * w[j];
         }
         for (int j = 0; j < n; j += i << 1) {
-            Cp *p = a + j, *q = a + j + i;
+            auto *p = a.data() + j, *q = a.data() + j + i;
             for (int k = 0; k < i; ++k) {
-                Cp x = q[k] * w[k];
+                auto x = q[k] * w[k];
                 q[k] = p[k] - x;
                 p[k] = p[k] + x;
             }
         }
     }
-    if (0 < p) { return; }
-    int inv = 1.0 / n;
-    for (int i = 0; i < n; ++i) { a[i] = a[i] * inv; }
+    return a;
 }
-void multiply(int *A, int *B, int *C, int n, int m, int mod) {
-    static Cp a[M], b[M], c[M], d[M], w[M];
+auto mtt(const std::vector<int> &A, const std::vector<int> &B, int mod) {
+    auto n = A.size(), m = B.size();
+    auto l = std::bit_ceil(n + m - 1);
+    std::vector<Couple> a(l), b(l), c(l), d(l);
     for (int i = 0; i < n; ++i) { a[i] = {(double) (A[i] & 32767), (double) (A[i] >> 15)}; }
     for (int i = 0; i < m; ++i) { b[i] = {(double) (B[i] & 32767), (double) (B[i] >> 15)}; }
-    int l = std::bit_ceil(m + n - 1);
-    DFT(a, l, 1);
-    DFT(b, l, 1);
+    a = dft(a);
+    b = dft(b);
     for (int i = 0; i < l; ++i) {
-        int j = (l - 1) & (l - i);
-        c[j] = (Cp){0.5 * (a[i].Re + a[j].Re), 0.5 * (a[i].Im - a[j].Im)} * b[i];
-        d[j] = (Cp){0.5 * (a[j].Im + a[i].Im), 0.5 * (a[j].Re - a[i].Re)} * b[i];
+        auto j = (l - 1) & (l - i);
+        c[j] = Couple{0.5 * (a[i].Re + a[j].Re), 0.5 * (a[i].Im - a[j].Im)} * b[i];
+        d[j] = Couple{0.5 * (a[j].Im + a[i].Im), 0.5 * (a[j].Re - a[i].Re)} * b[i];
     }
-    DFT(c, l, 1);
-    DFT(d, l, 1);
-    double inv = 1.0 / l;
+    c = dft(c);
+    d = dft(d);
+    std::vector<int> C(n + m - 1);
     for (int i = 0; i < n + m - 1; ++i) {
-        long long u = c[i].Re * inv + 0.5, v = c[i].Im * inv + 0.5;
-        long long x = d[i].Re * inv + 0.5, y = d[i].Im * inv + 0.5;
-        a[i] = b[i] = c[i] = d[i] = (Cp){0, 0};
+        auto u = std::llrint(c[i].Re / l), v = std::llrint(c[i].Im / l);
+        auto x = std::llrint(d[i].Re / l), y = std::llrint(d[i].Im / l);
         C[i] = (u + ((v + x) << 15) + (y % mod << 30)) % mod;
     }
+    return C;
 }

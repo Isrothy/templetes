@@ -1,10 +1,8 @@
-#include <queue>
-#include <vector>
-struct BipartiteGraph {
+struct HopcroftKarp {
     std::vector<std::vector<int>> adj;
     std::vector<int> dx, dy, s, t;
     int nl, nr;
-    BipartiteGraph(int nl, int nr) : adj(nl + 1), dx(nl + 1), dy(nr + 1), s(nl + 1), t(nr + 1), nl(nl), nr(nr) {}
+    HopcroftKarp(int nl, int nr) : adj(nl + 1), dx(nl + 1), dy(nr + 1), s(nl + 1), t(nr + 1), nl(nl), nr(nr) {}
     void add_edge(int u, int v) { adj[u].push_back(v); }
     bool bfs() {
         fill(dx.begin(), dx.end(), -1);

@@ -1,6 +1,3 @@
-#include <optional>
-#include <stack>
-#include <vector>
 struct TwoSAT {
     std::stack<int> stk;
     std::vector<int> sccno, dfn, low;

@@ -1,8 +1,3 @@
-#include "../NumberTheory/common.h"
-#include <bit>
-#include <cmath>
-#include <optional>
-#include <vector>
 namespace polynomial {
     auto congruence_equation(int64_t a, int64_t b, int64_t p) {
         b = (b % p + p) % p;

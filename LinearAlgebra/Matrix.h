@@ -1,5 +1,3 @@
-#include <optional>
-#include <vector>
 template<int64_t mod> struct Matrix : private std::vector<std::vector<int64_t>> {
     int n{}, m{};
     Matrix() = default;

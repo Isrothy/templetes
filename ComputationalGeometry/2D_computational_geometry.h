@@ -1,9 +1,3 @@
-#include <cmath>
-#include <deque>
-#include <numeric>
-#include <optional>
-#include <span>
-#include <vector>
 constexpr double EPS = 1e-10;
 constexpr int sign(double x) { return x < -EPS ? -1 : EPS < x; }
 constexpr double sqr_diff(double a, double b) { return (a + b) * (a - b); }

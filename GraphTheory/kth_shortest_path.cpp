@@ -1,6 +1,3 @@
-#include <numeric>
-#include <queue>
-#include <span>
 template<typename T> struct KthSsp {
     static constexpr T INF = std::numeric_limits<T>::max();
     template<typename C> using MinHeap = std::priority_queue<C, std::vector<C>, std::greater<>>;

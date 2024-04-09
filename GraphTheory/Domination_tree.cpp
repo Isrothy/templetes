@@ -1,5 +1,3 @@
-#include <span>
-#include <vector>
 struct DominatorTree {
     std::vector<std::vector<int>> adj, rev, bucket;
     std::vector<int> parent, dfn, va, dsu, idom, sdom, label;
@@ -15,19 +13,19 @@ struct DominatorTree {
         dfn[u] = (int) va.size();
         va.push_back(u);
         for (auto v: adj[u]) {
-            if (dfn[v] == 0) {
+            if (!dfn[v]) {
                 parent[v] = u;
                 dfs(v);
             }
         }
     }
-    DominatorTree(std::span<std::pair<int, int>> edges, int n, int root) : adj(n + 1), rev(n + 1), bucket(n + 1), parent(n + 1), dfn(n + 1), va(1), dsu(n + 1), idom(n + 1), sdom(n + 1), label(n + 1) {
+    DominatorTree(std::span<std::pair<int, int>> edges, int n, int root) : adj(n), rev(n), bucket(n), parent(n), dfn(n), va(1), dsu(n), idom(n), sdom(n), label(n) {
         for (auto [u, v]: edges) {
             adj[u].push_back(v);
             rev[v].push_back(u);
         }
         dfs(root);
-        for (int u = 1; u <= n; ++u) { dsu[u] = sdom[u] = label[u] = u; }
+        for (int u = 0; u < n; ++u) { dsu[u] = sdom[u] = label[u] = u; }
         for (auto i = (int) va.size() - 1; i; --i) {
             auto u = va[i];
             for (auto v: rev[u]) {

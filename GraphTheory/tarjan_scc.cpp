@@ -1,14 +1,12 @@
-#include <span>
-#include <stack>
 struct TarjanScc {
     std::vector<std::vector<int>> adj, sccs;
     std::vector<int> dfn, low;
     std::stack<int> stk;
     std::vector<bool> on_stack;
     int dfs_clock;
-    TarjanScc(std::span<std::pair<int, int>> edges, int n) : adj(n + 1), dfn(n + 1), low(n + 1), on_stack(n + 1), dfs_clock(0) {
+    TarjanScc(std::span<std::pair<int, int>> edges, int n) : adj(n), dfn(n), low(n), on_stack(n), dfs_clock(0) {
         for (auto [u, v]: edges) { adj[u].emplace_back(v); }
-        for (int u = 1; u <= n; ++u) {
+        for (int u = 0; u < n; ++u) {
             if (!dfn[u]) { find_sccs(u); }
         }
     }

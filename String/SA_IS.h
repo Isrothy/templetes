@@ -1,7 +1,3 @@
-#include <numeric>
-#include <span>
-#include <string_view>
-#include <vector>
 enum class SuffixType : bool { l, s };
 bool is_lms_char(std::span<SuffixType> type, int x) { return x > 0 && type[x] == SuffixType::s && type[x - 1] == SuffixType::l; }
 bool substring_equal(std::span<int> s, std::span<SuffixType> type, int x, int y) {

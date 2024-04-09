@@ -1,5 +1,3 @@
-#include <queue>
-#include <vector>
 int Steiner_Minimum_Tree(int *s, int k) {
     for (int S = 0; S < 1 << k; ++S) {
         for (int u = 1; u <= n; ++u) { dp[S][u] = INF; }

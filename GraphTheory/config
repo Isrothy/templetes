@@ -5,8 +5,8 @@
 <Steiner Minimum Tree> <steiner_minimum_tree.cpp>
 <Four Membered Rings> <four_membered_rings.cpp>
 <Three Membered Rings> <three_membered_rings.cpp>
-<HK> <hk.cpp>
-<KM> <km.cpp>
+<Hopcroft–Karp> <hopcroft_karp.cpp>
+<Hungarian> <hungarian.cpp>
 <Kth Shortest Path> <kth_shortest_path.cpp>
 <Tarjan's BCC> <tarjan_bcc.cpp>
 <Tarjan's ECC> <tarjan_ecc.cpp>

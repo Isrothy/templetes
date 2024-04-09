@@ -1,6 +1,5 @@
-#include <queue>
-#include <vector>
 struct Dinic {
+    static const int64_t INF = INT64_MAX;
     struct Edge {
         int from, to;
         int64_t cap, flow;
@@ -11,7 +10,7 @@ struct Dinic {
     std::vector<int> dis, cur;
     std::vector<bool> vis;
     int n;
-    explicit Dinic(int n) : adj(n + 1), dis(n + 1), cur(n + 1), vis(n + 1), n(n + 1) {}
+    explicit Dinic(int n) : adj(n), dis(n), cur(n), vis(n), n(n) {}
     void add_edge(int u, int v, int64_t c) {
         adj[u].push_back((int) edges.size());
         edges.emplace_back(u, v, c);
@@ -57,7 +56,7 @@ struct Dinic {
         int64_t flow = 0;
         while (bfs(s, t)) {
             std::fill(cur.begin(), cur.end(), 0);
-            flow += dfs(s, t, std::numeric_limits<int64_t>::max());
+            flow += dfs(s, t, INF);
         }
         return flow;
     }

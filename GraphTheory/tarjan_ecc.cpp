@@ -1,22 +1,20 @@
-#include <optional>
-#include <span>
 struct TarjanEcc {
     std::vector<std::vector<std::pair<int, int>>> adj;
     std::vector<int> dfn, low;
     std::vector<bool> is_bridge;
     std::vector<std::vector<int>> eccs;
     int dfs_clock;
-    TarjanEcc(std::span<std::pair<int, int>> edges, int n) : adj(n + 1), dfn(n + 1), low(n + 1), is_bridge(edges.size(), false), eccs(), dfs_clock(0) {
+    TarjanEcc(std::span<std::pair<int, int>> edges, int n) : adj(n), dfn(n), low(n), is_bridge(edges.size(), false), eccs(), dfs_clock(0) {
         for (int i = 0; i < edges.size(); ++i) {
             auto [u, v] = edges[i];
             adj[u].emplace_back(v, i);
             adj[v].emplace_back(u, i);
         }
-        for (int u = 1; u <= n; ++u) {
-            if (!dfn[u]) { find_bridges(u, std::nullopt); }
+        for (int u = 0; u < n; ++u) {
+            if (!dfn[u]) { find_bridges(u, -1); }
         }
-        std::vector<bool> visited(n + 1);
-        for (int u = 1; u <= n; ++u) {
+        std::vector<bool> visited(n);
+        for (int u = 0; u < n; ++u) {
             if (!visited[u]) {
                 std::vector<int> q;
                 q.emplace_back(u);
@@ -35,7 +33,7 @@ struct TarjanEcc {
         }
     }
 private:
-    void find_bridges(int u, std::optional<int> prev) {
+    void find_bridges(int u, int prev) {
         dfn[u] = low[u] = ++dfs_clock;
         for (auto [v, id]: adj[u]) {
             if (prev == id) { continue; }

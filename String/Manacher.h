@@ -1,6 +1,3 @@
-#include <span>
-#include <string_view>
-#include <vector>
 auto manacher(std::string_view s) {
     auto n = s.size();
     std::vector<int> p(2 * n + 1);

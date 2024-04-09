@@ -1,4 +1,3 @@
-#include <string>
 template<size_t M, size_t Sigma> struct ACAutomaton {
     int next[M][Sigma]{}, fail[M]{}, queue[M]{}, cnt[M]{};
     int n;

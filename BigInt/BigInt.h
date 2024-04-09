@@ -1,7 +1,3 @@
-#include <cassert>
-#include <cstring>
-#include <string>
-#include <vector>
 struct BigUnsigned : private std::vector<int> {
     static constexpr int bit = 9;
     static constexpr int base = 1e9;

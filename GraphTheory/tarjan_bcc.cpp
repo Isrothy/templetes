@@ -1,20 +1,18 @@
-#include <span>
-#include <stack>
 struct TarjanBcc {
     std::vector<std::vector<int>> adj, bccs;
     std::vector<int> dfn, low;
     std::vector<bool> is_cut;
     std::stack<int> stk;
     int dfs_clock;
-    TarjanBcc(std::span<std::pair<int, int>> edges, int n) : adj(n + 1), dfn(n + 1), low(n + 1), is_cut(n + 1), dfs_clock(0) {
+    TarjanBcc(std::span<std::pair<int, int>> edges, int n) : adj(n), dfn(n), low(n), is_cut(n), dfs_clock(0) {
         for (auto [u, v]: edges) {
             adj[u].emplace_back(v);
             adj[v].emplace_back(u);
         }
-        for (int u = 1; u <= n; ++u) {
+        for (int u = 0; u < n; ++u) {
             if (!dfn[u]) {
                 auto tmp = dfs_clock;
-                find_bccs(u, 0);
+                find_bccs(u, -1);
                 if (dfs_clock - tmp == 1) { bccs.emplace_back(1, u); }
             }
         }
@@ -24,7 +22,6 @@ private:
         dfn[u] = low[u] = ++dfs_clock;
         stk.push(u);
         int child = 0;
-        is_cut[u] = false;
         for (auto v: adj[u]) {
             if (v == fa) { continue; }
             if (!dfn[v]) {
@@ -45,6 +42,6 @@ private:
                 low[u] = std::min(low[u], dfn[v]);
             }
         }
-        if (fa == 0) { is_cut[u] = child > 1; }
+        if (fa == -1) { is_cut[u] = child > 1; }
     }
 };

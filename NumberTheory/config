@@ -1,4 +1,4 @@
 <common> <common.h>
 <ex-Lucas> <ex_lucas.h>
 <quadratic residude> <quadratic_residue.cpp>
-<Sieve of Min 25> <sieve_of_Min_25.cpp>
+<Sieve of Min 25> <sieve_of_min25.cpp>

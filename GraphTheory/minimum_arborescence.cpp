@@ -1,7 +1,3 @@
-#include <optional>
-#include <span>
-#include <stack>
-#include <vector>
 template<class T> struct MinimumArborescence {
     struct Heap {
         T val{}, lazy{};
@@ -56,7 +52,7 @@ template<class T> struct MinimumArborescence {
         push_down(p);
         return merge(heaps[p].ch[0], heaps[p].ch[1]);
     }
-    MinimumArborescence(std::span<std::tuple<int, int, T>> edges, int n, int root) : heaps(1), parent(n + 1), h(n + 1), mark(n + 1) {
+    MinimumArborescence(std::span<std::tuple<int, int, T>> edges, int n, int root) : heaps(1), parent(n), h(n), mark(n) {
         for (int i = 0; i < edges.size(); ++i) {
             auto [from, to, w] = edges[i];
             heaps.push_back({w, 0, from, to, i});
@@ -66,11 +62,12 @@ template<class T> struct MinimumArborescence {
     }
     auto solve(auto edges, int n, int root) -> std::optional<std::vector<int>> {
         std::stack<std::tuple<int, int, std::vector<std::pair<int, int>>>> rings;
-        std::vector<int> choice(n + 1);
+        std::vector<int> choice(n);
         std::fill(parent.begin(), parent.end(), -1);
+        std::fill(mark.begin(), mark.end(), -1);
         mark[root] = root;
-        for (int i = 1; i <= n; ++i) {
-            if (i == root || mark[i]) { continue; }
+        for (int i = 0; i < n; ++i) {
+            if (mark[i] != -1) { continue; }
             auto u = i;
             mark[u] = i;
             while (true) {
@@ -90,7 +87,7 @@ template<class T> struct MinimumArborescence {
                         v = find(w);
                     } while (v != u);
                     rings.emplace(u, stamp, std::move(ring));
-                } else if (!mark[v]) {
+                } else if (mark[v] == -1) {
                     u = v;
                     mark[u] = i;
                 } else {

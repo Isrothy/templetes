@@ -3,3 +3,4 @@
 <Delaunary Triangulation> <delaunary_triangulation.h>
 <closest pair of points> <closest_pair_of_points.h>
 <Adaptive Simpson Integral> <Adaptive_Simpson_integral.h>
+<Dynamic Convex Hull> <dynamic_convex_hull.h>

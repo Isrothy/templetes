@@ -1,5 +1,3 @@
-#include "2D_computational_geometry.h"
-#include <functional>
 auto simpson(double l, double r, const std::function<double(double)> &f) {
     auto mid = (l + r) / 2;
     return (r - l) * (f(l) + 4 * f(mid) + f(r)) / 6;

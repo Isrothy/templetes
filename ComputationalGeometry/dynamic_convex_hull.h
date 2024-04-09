@@ -1,5 +1,3 @@
-#include "2D_computational_geometry.h"
-#include <set>
 class DynamicConvexHull {
     struct less_x {
         bool operator()(const Point &A, const Point &B) const { return A.x == B.x ? A.y < B.y : A.x < B.x; }

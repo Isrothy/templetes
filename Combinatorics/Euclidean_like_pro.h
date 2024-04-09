@@ -1,5 +1,4 @@
-#include <cstdint>
-#include <vector>
+// sum_{x=0}^n x^{k1} ((ax+b)/c)^{k2}
 template<int64_t M, int64_t Mod> class EuclideanLike {
     constexpr static int64_t M1 = M + 2;
     int64_t B[M1]{}, P[M1][M1]{}, C[M1][M1]{}, inv[M1]{};
@@ -12,7 +11,7 @@ template<int64_t M, int64_t Mod> class EuclideanLike {
         }
         return sum;
     }
-  public:
+public:
     EuclideanLike() {
         inv[1] = 1;
         for (int i = 2; i < M1; ++i) { inv[i] = -Mod / i * inv[Mod % i] % Mod; }

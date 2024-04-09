@@ -1,5 +1,3 @@
-#include <queue>
-#include <vector>
 struct Blossom {
     std::vector<std::vector<int>> adj;
     std::vector<int> mate, link, label, last_time, fa;

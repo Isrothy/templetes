@@ -1,4 +1,3 @@
-#include <vector>
 struct DLX {
     struct node {
         int i, j;

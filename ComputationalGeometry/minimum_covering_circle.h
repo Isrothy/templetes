@@ -1,5 +1,3 @@
-#include "2D_computational_geometry.h"
-#include <random>
 Circle minimum_covering_circle(std::vector<Point> a) {
     std::shuffle(a.begin(), a.end(), std::mt19937_64(std::random_device()()));
     auto O = a[0];
