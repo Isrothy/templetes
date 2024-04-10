@@ -1,5 +1,5 @@
-constexpr double Eps = 1e-10;
-constexpr int sign(double x) { return (x > Eps) - (x < -Eps); }
+constexpr double eps = 1e-10;
+constexpr int sign(double x) { return x < -eps ? -1 : (x > eps ? 1 : 0); }
 void pivot(std::vector<std::vector<double>> &A, int l, int e, std::vector<int> &id) {
     auto m = (int) A.size();
     auto n = (int) A[0].size();

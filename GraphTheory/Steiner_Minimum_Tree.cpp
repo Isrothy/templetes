@@ -1,29 +1,55 @@
-int Steiner_Minimum_Tree(int *s, int k) {
-    for (int S = 0; S < 1 << k; ++S) {
-        for (int u = 1; u <= n; ++u) { dp[S][u] = INF; }
+auto Steiner_Minimum_Tree(std::span<std::vector<std::pair<int, int>>> adj, std::span<int> s) -> std::optional<std::vector<std::tuple<int, int, int>>> {
+    static constexpr int INF = 0x3f3f3f3f;
+    auto n = adj.size(), k = s.size();
+    auto dp = std::vector(1 << k, std::vector<int>(n, INF));
+    auto prev = std::vector(1 << k, std::vector<std::pair<int, int>>(n));
+    for (int i = 0; i < k; ++i) {
+        dp[1 << i][s[i]] = 0;
+        prev[1 << i][s[i]] = {0, -1};
     }
-    for (int i = 0; i < k; ++i) { dp[1 << i][s[i]] = 0; }
     for (int S = 1; S < 1 << k; ++S) {
         for (int T = (S - 1) & S; T; --T &= S) {
-            for (int u = 1; u <= n; ++u) { dp[S][u] = min(dp[S][u], dp[T][u] + dp[S ^ T][u]); }
+            for (int u = 0; u < n; ++u) {
+                if (auto val = dp[T][u] + dp[S ^ T][u]; val < dp[S][u]) {
+                    dp[S][u] = val;
+                    prev[S][u] = std::make_pair(1, T);
+                }
+            }
         }
-        priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> Q;
-        for (int u = 1; u <= n; ++u) { Q.push(make_pair(dp[S][u], u)); }
-        while (!Q.empty()) {
-            pair<int, int> p = Q.top();
-            Q.pop();
-            int u = p.second;
-            if (p.first != dp[S][u]) { continue; }
-            for (auto e: E[u]) {
-                int v = e.first;
-                if (p.first + e.second < dp[S][v]) {
-                    dp[S][v] = p.first + e.second;
-                    Q.push(make_pair(dp[S][v], v));
+        std::priority_queue<std::pair<int, int>> q;
+        for (int u = 0; u < n; ++u) { q.emplace(-dp[S][u], u); }
+        while (!q.empty()) {
+            auto [d, u] = q.top();
+            q.pop();
+            if (-d != dp[S][u]) { continue; }
+            for (auto &[v, w]: adj[u]) {
+                if (auto val = -d + w; val < dp[S][v]) {
+                    dp[S][v] = val;
+                    prev[S][v] = std::make_pair(2, u);
+                    q.emplace(-dp[S][v], v);
                 }
             }
         }
     }
-    int res = INF;
-    for (int u = 1; u <= n; ++u) { res = min(res, dp[(1 << k) - 1][u]); }
-    return res;
+    auto min = std::min_element(dp[(1 << k) - 1].begin(), dp[(1 << k) - 1].end());
+    if (*min == INF) { return std::nullopt; }
+    std::vector<std::tuple<int, int, int>> edges;
+    std::queue<std::pair<int, int>> q;
+    q.emplace((1 << k) - 1, min - dp[(1 << k) - 1].begin());
+    while (!q.empty()) {
+        auto [S, u] = q.front();
+        q.pop();
+        switch (auto [x, y] = prev[S][u]; x) {
+            case 1:
+                q.emplace(y, u);
+                q.emplace(S ^ y, u);
+                break;
+            case 2:
+                q.emplace(S, y);
+                edges.emplace_back(y, u, dp[S][u] - dp[S][y]);
+                break;
+            default: break;
+        }
+    }
+    return edges;
 }

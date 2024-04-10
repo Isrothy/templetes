@@ -1,1 +1,3 @@
 <Simplex> <Simplex.h>
+<Matrix> <Matrix.h>
+<Berlekamp Massey> <Berlekamp_Massey.cpp>

@@ -1,53 +1,37 @@
-#include <queue>
-#include <vector>
-bool Johnson(int n, std::vector<std::pair<int, int>> *E, long long dis[M][M]) {
-    std::queue<int> Q;
-    static int h[M], cnt[M];
-    static bool in_queue[M];
-    for (int u = 1; u <= n; ++u) {
-        h[u] = cnt[u] = 0;
-        in_queue[u] = true;
-        Q.push(u);
-    }
-    while (!Q.empty()) {
-        int u = Q.front();
-        Q.pop();
-        in_queue[u] = false;
-        for (auto e: E[u]) {
-            int v = e.first;
-            long long d = h[u] + e.second;
-            if (d < h[v]) {
-                h[v] = d;
-                if (!in_queue[v]) {
-                    in_queue[v] = true;
-                    Q.push(v);
-                    if (++cnt[v] == n) { return false; }
-                }
+auto johnson(std::span<std::tuple<int, int, int>> edges, int n) -> std::optional<std::vector<std::vector<int>>> {
+    std::vector<int> h(n, 0);
+    for (int i = 0;; ++i) {
+        bool flag = false;
+        for (const auto &[u, v, w]: edges) {
+            if (h[u] + w < h[v]) {
+                h[v] = h[u] + w;
+                flag = true;
             }
         }
+        if (!flag) { break; }
+        if (i == n) { return std::nullopt; }
     }
-    for (int i = 1; i <= n; ++i) {
-        std::priority_queue<std::pair<int, int>, std::vector<std::pair<int, int>>, std::greater<>> heap;
-        for (int u = 1; u <= n; ++u) { dis[i][u] = INF; }
+    std::vector<std::vector<int>> dis(n, std::vector<int>(n, INT_MAX));
+    std::vector<std::vector<std::pair<int, int>>> adj(n);
+    for (const auto &[u, v, w]: edges) { adj[u].emplace_back(v, w); }
+    for (int i = 0; i < n; ++i) {
+        std::priority_queue<std::pair<int, int>> heap;
         dis[i][i] = 0;
-        heap.push(std::make_pair(0, i));
+        heap.emplace(0, i);
         while (!heap.empty()) {
-            auto p = heap.top();
+            auto [d, u] = heap.top();
             heap.pop();
-            int u = p.second;
-            if (dis[i][u] < p.first) { continue; }
-            for (auto e: E[u]) {
-                int v = e.first;
-                long long d = dis[i][u] + h[u] - h[v] + e.second;
-                if (d < dis[i][v]) {
+            if (dis[i][u] != -d) { continue; }
+            for (auto [v, w]: adj[u]) {
+                if (auto d = dis[i][u] + h[u] - h[v] + w; d < dis[i][v]) {
                     dis[i][v] = d;
-                    heap.push(std::make_pair(d, e.first));
+                    heap.emplace(-d, v);
                 }
             }
         }
-        for (int u = 1; u <= n; ++u) {
-            if (dis[i][u] != INF) { dis[i][u] += h[u] - h[i]; }
+        for (int j = 0; j < n; ++j) {
+            if (dis[i][j] != INT_MAX) { dis[i][j] += h[j] - h[i]; }
         }
     }
-    return true;
+    return dis;
 }

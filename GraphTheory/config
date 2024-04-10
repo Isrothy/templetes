@@ -2,6 +2,8 @@
 <Primal Dual> <primal_dual.cpp>
 <MinimumArborescence> <minimum_arborescence.cpp>
 <Steiner Minimum Tree> <steiner_minimum_tree.cpp>
+<Johnson's Algorithm> <Johnson.cpp>
+<Stoer Wagner> <stoer_wagner.cpp>
 <Three Membered Rings> <three_membered_rings.cpp>
 <Four Membered Rings> <four_membered_rings.cpp>
 <Hopcroft–Karp> <hopcroft_karp.cpp>

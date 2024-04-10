@@ -1,5 +1,5 @@
-const double EPS = 1e-10;
-int sign(double x) { return (x > 0) - (x < 0); }
+const double eps = 1e-10;
+constexpr int sign(double x) { return x < -eps ? -1 : (x > eps ? 1 : 0); }
 struct Point {
     double x, y, z;
     Point() = default;

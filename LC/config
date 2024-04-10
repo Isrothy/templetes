@@ -1,4 +1,6 @@
 <convex hull trick><convex_hull_trick.cpp>
 <1D1D> <oneDoneD.cpp>
 <SMAWK> <SMAWK.cpp>
+<Barrett Reduction> <barrett_reduction.cpp>
+<fast read> <fast_read.cpp>
 <bashrc> <.bashrc>

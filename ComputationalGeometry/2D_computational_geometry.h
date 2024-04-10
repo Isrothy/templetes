@@ -1,5 +1,5 @@
-constexpr double EPS = 1e-10;
-constexpr int sign(double x) { return x < -EPS ? -1 : EPS < x; }
+constexpr double eps = 1e-10;
+constexpr int sign(double x) { return x < -eps ? -1 : (x > eps ? 1 : 0); }
 constexpr double sqr_diff(double a, double b) { return (a + b) * (a - b); }
 struct Point {
     double x = 0, y = 0;
@@ -103,7 +103,7 @@ enum class PointShapeRelation : int { inside = -1, on = 0, outside = 1 };
 auto point_circle_relation(const Point &P, const Circle &c) {
     const auto &[O, r] = c;
     auto d = (P - O).len();
-    return PointShapeRelation(sign(r - d));
+    return PointShapeRelation(sign(d - r));
 }
 enum class CircleCircleRelation {
     identital,
@@ -158,7 +158,7 @@ enum class CircleLineRelation { intersecting = -1, tangent = 0, disjoint = 1 };
 auto circle_line_relation(const Circle &c, const Line &l) {
     const auto &[O, r] = c;
     auto d = point_line_distance(O, l);
-    return CircleLineRelation(sign(r - d));
+    return CircleLineRelation(sign(d - r));
 }
 auto circle_line_intersection(const Circle &c, const Line &l) -> std::pair<CircleLineRelation, std::variant<std::monostate, Point, std::pair<Point, Point>>> {
     const auto &[O, r] = c;
@@ -276,7 +276,7 @@ auto minkowski_sum(const Polygon &a, const Polygon &b) {
         v.emplace_back(P);
     };
     auto n = a.size(), m = b.size();
-    size_t i = 0, j = 0;
+    int i = 0, j = 0;
     Polygon c;
     c.reserve(n + m);
     push_point(c, a.front() + b.front());
@@ -300,7 +300,7 @@ auto minkowski_sum(const Polygon &a, const Polygon &b) {
 auto point_in_polygon(const Point &P, const Polygon &p) {
     using enum PointShapeRelation;
     bool result = false;
-    for (size_t i = 0, n = p.size(); i < n; ++i) {
+    for (int i = 0, n = p.size(); i < n; ++i) {
         auto A = p[i];
         auto B = p[(i + 1) % n];
         if (point_on_segment(P, {A, B})) { return on; }
@@ -311,7 +311,7 @@ auto point_in_polygon(const Point &P, const Polygon &p) {
 }
 auto polygon_area(const Polygon &p) {
     double result = 0;
-    for (size_t i = 0, n = p.size(); i < n; ++i) { result += triangle_area({p[0], p[i], p[(i + 1) % n]}); }
+    for (int i = 0, n = p.size(); i < n; ++i) { result += triangle_area({p[0], p[i], p[(i + 1) % n]}); }
     return result;
 }
 auto half_planes_intersection(std::vector<Line> lines) {
@@ -334,8 +334,8 @@ auto half_planes_intersection(std::vector<Line> lines) {
             t.pop_front();
             q.pop_front();
         }
-        q.emplace_back(line);
         t.emplace_back(line_intersection(q.back(), line).second.value());
+        q.emplace_back(line);
     }
     while (!t.empty() && side_of_line(t.back(), q.front()) != left) {
         t.pop_back();
@@ -347,24 +347,24 @@ auto half_planes_intersection(std::vector<Line> lines) {
 auto polygons_union_area(const std::span<Polygon> &polygons) {
     auto n = polygons.size();
     std::vector<Line> lines;
-    for (size_t i = 0; i < n; ++i) {
-        for (size_t m = polygons[i].size(), j = 0; j < m; ++j) { lines.emplace_back(polygons[i][j], polygons[i][(j + 1) % m]); }
+    for (int i = 0; i < n; ++i) {
+        for (int m = polygons[i].size(), j = 0; j < m; ++j) { lines.emplace_back(polygons[i][j], polygons[i][(j + 1) % m]); }
     }
     auto m = lines.size();
-    std::vector<size_t> fa(m);
-    std::vector<std::vector<std::tuple<size_t, Point, Side, Side>>> events(m);
+    std::vector<int> fa(m);
+    std::vector<std::vector<std::tuple<int, Point, Side, Side>>> events(m);
     std::iota(fa.begin(), fa.end(), 0);
-    std::function<size_t(size_t)> find;
-    find = [&](size_t x) { return fa[x] == x ? x : fa[x] = find(fa[x]); };
-    for (size_t i = 0; i < m; ++i) {
-        for (size_t j = i + 1; j < m; ++j) {
+    std::function<int(int)> find;
+    find = [&](int x) { return fa[x] == x ? x : fa[x] = find(fa[x]); };
+    for (int i = 0; i < m; ++i) {
+        for (int j = i + 1; j < m; ++j) {
             if (auto u = find(i), v = find(j); u != v) {
                 if (auto [relation, _] = line_intersection(lines[i], lines[j]); relation == LineLineRelation::identical) { fa[u] = v; }
             }
         }
     }
-    for (size_t i = 0; i < m; ++i) {
-        for (size_t j = i + 1; j < m; ++j) {
+    for (int i = 0; i < m; ++i) {
+        for (int j = i + 1; j < m; ++j) {
             if (auto u = find(i), v = find(j); u != v) {
                 if (auto [relation, I] = line_intersection(lines[u], lines[v]); relation == LineLineRelation::intersecting) {
                     const auto &[A, B] = lines[i];
@@ -380,7 +380,7 @@ auto polygons_union_area(const std::span<Polygon> &polygons) {
         }
     }
     double res = 0;
-    for (size_t i = 0; i < m; ++i) {
+    for (int i = 0; i < m; ++i) {
         if (find(i) != i) { continue; }
         const auto &[a, b] = lines[i];
         std::sort(events[i].begin(), events[i].end(), [&](const auto &a, const auto &b) { return std::get<0>(a) < std::get<0>(b); });

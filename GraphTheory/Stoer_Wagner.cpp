@@ -1,31 +1,27 @@
-int stoer_wagner(int d[M][M], int n) {
-    static int w[M];
-    static bool vis[M], del[M];
-    int res = INF;
-    for (int u = 1; u <= n; ++u) { del[u] = false; }
+auto stoer_wagner(std::vector<std::vector<int>> adj) {
+    auto n = adj.size();
+    std::vector<bool> del(n);
+    int res = INT_MAX;
     for (int i = 1; i < n; ++i) {
-        for (int u = 1; u <= n; ++u) {
-            w[u] = 0;
-            vis[u] = false;
-        }
+        std::vector<int> w(n);
+        std::vector<bool> vis(n);
         int s = -1, t = -1;
-        for (int j = 1; j <= n - i + 1; ++j) {
+        for (int j = 0; j < n - i + 1; ++j) {
             int v = -1;
-            for (int u = 1; u <= n; ++u) {
+            for (int u = 0; u < n; ++u) {
                 if (!del[u] && !vis[u] && (v == -1 || w[v] < w[u])) { v = u; }
             }
             vis[v] = true;
-            for (int u = 1; u <= n; ++u) {
-                if (!del[u] && !vis[u]) { w[u] += d[u][v]; }
+            for (int u = 0; u < n; ++u) {
+                if (!del[u] && !vis[u]) { w[u] += adj[u][v]; }
             }
-            s = t;
-            t = v;
+            s = t; t = v;
         }
-        res = min(res, w[t]);
+        res = std::min(res, w[t]);
         del[t] = true;
-        for (int u = 1; u <= n; ++u) {
-            d[u][s] += d[u][t];
-            d[s][u] += d[t][u];
+        for (int u = 0; u < n; ++u) {
+            adj[u][s] += adj[u][t];
+            adj[s][u] += adj[t][u];
         }
     }
     return res;
